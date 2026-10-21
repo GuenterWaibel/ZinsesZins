@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zinsrechner</title>
+    <style>
+        body {
+            display:flex;
+            justify-content:flex-start;
+            align-items:flex-start;
+            margin: 60px;
+         
+        }
+        label,input,button {
+            display: block;
+            position:relative;
+            margin: top 10px;
+            margin-bottom: auto;
+        }
+        result {
+            display:flex;
+            margin-top: auto;
+            font-weight: bold;
+        }
+
+        form {
+            display: block;
+            margin-top: 100px;
+        }
+    </style>
+
+</head>
+<body>
+    <h1>Zinsrechner   </h1>
+    <form id="Zinsrechner">
+        <label for="Startkapital">Gib dein Startkapital ein [EUR]:</label>
+        <input type="number" id="Startkapital" name="Startkapital" min="1" required>
+        <label for="Zinssatz">Gib den Zinssatz ein [%]:</label>
+        <input type="number" id="Zinssatz" name="Zinssatz" placeholder="z.B. 5" min="1" max="20" required>
+        <label for="Laufzeit">Gib die Laufzeit ein [Jahre]:</label>
+        <input type="number" id="Laufzeit" name="Laufzeit" placeholder="z.B. 20" min="1" max="35" required>
+        <h2></h2>
+        <button type="button" onclick="ZinsesZinsRechner()" > Berechnen </button>
+    </form>
+    <h2></h2>
+    <div class="result" id="result"></div>
+
+    <script>
+    function ZinsesZinsRechner() {
+        // Eingabewerte abrufen
+        const Kapital = parseFloat(document.getElementById("Startkapital").value);
+        const Zinssatz = parseFloat(document.getElementById("Zinssatz").value);
+        const Laufzeit = parseInt(document.getElementById("Laufzeit").value);
+
+        // Validierung
+        if (isNaN(Kapital) || isNaN(Zinssatz) || isNaN(Laufzeit)){
+            document.getElementById("result").innerHTML = "<p>Bitte geben Sie gültige Zahlen ein.</p>";
+            return;
+        }
+
+        // Schleife für jedes Jahr in der Laufzeit
+        for (let jahr = 1; jahr <= Laufzeit; jahr++) {
+                Kapital = Kapital * (1 + Zinssatz / 100);
+        }
+
+        // Ergebnis formatieren und anzeigen
+        const formatter = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' });
+        document.getElementById("result").innerHTML = 
+            `<p>Das Endkapital nach ${Laufzeit} Jahren beträgt: <strong>${formatter.format(Kapital)}</strong></p>`;
+    }
+
+    </script>
+
+</body>
+</html>
